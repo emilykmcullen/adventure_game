@@ -54,9 +54,16 @@ public class GameTest {
     }
 //    @Test
 //    public void ifEnemyKilledDropsTreasure(){
+//        warlockList.add(0, treasure);
+//        enemy1.setThings(warlockList);
 //        game.addEnemyToList(enemy1);
-//        enemy1.setTreasure(treasure);
+//        player.
 //        enemy1.reduceHp(10);
 //    }
+
+    @Test
+    public void playerCanEatFood(){
+
+    }
 
 }

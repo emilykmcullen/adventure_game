@@ -10,4 +10,8 @@ public class Treasure extends Thing {
         super(name, description, canTake, canFight, canEat, canDrink);
         this.value = value;
     }
+
+    public int getValue() {
+        return value;
+    }
 }

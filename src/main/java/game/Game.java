@@ -19,7 +19,7 @@ public class Game {
     private Actor player;  // the player - provides 'first person perspective'
 
     private List<String> commands = new ArrayList<>(Arrays.asList(
-            "take", "drop", "look", "l", "i", "inventory", "fight",
+            "take", "drop", "look", "l", "i", "inventory", "fight", "eat",
             "n", "s", "w", "e"
              ));
     private List<String> objects = new ArrayList<>(Arrays.asList("shades", "ripped jeans",
@@ -124,6 +124,19 @@ public class Game {
         return retStr;
     }
 
+    // Eat object
+//    private String eatOb(String obname) {
+//        String retStr = "";
+//        Thing t = player.getThings().thisOb(obname);
+//        if (obname.equals("")){
+//            obname = "nameless object";
+//        } if (t == null) {
+//            retStr = "You'll have to tell me which object you want to 'eat'!";
+//        } if (t.isEatable(obname)){
+//            player.increaseHP.
+//        }
+//    }
+
     private String dropOb(String obname) {
         String retStr = "";
         Thing t = player.getThings().thisOb(obname);
@@ -137,6 +150,8 @@ public class Game {
         }
         return retStr;
     }
+
+
 
     private String fightEnemy(String obname) {
         String retStr = "";
@@ -348,6 +363,10 @@ public class Game {
                 case "fight":
                     msg = fightEnemy(noun);
                     break;
+//                case "eat":
+//                    msg = eatOb(noun);
+//                    break;
+
                 default:
                     msg += " (not yet implemented)";
                     break;

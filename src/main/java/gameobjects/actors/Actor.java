@@ -2,6 +2,7 @@ package gameobjects.actors;
 
 import gameobjects.ThingHolder;
 import gameobjects.ThingList;
+import gameobjects.objects.Treasure;
 import gameobjects.rooms.Room;
 
 public class Actor extends ThingHolder {
@@ -43,6 +44,12 @@ public class Actor extends ThingHolder {
 
     public void reduceHp(int damage){
         this.hp -= damage;
+    }
+
+    public void increaseHP(Treasure food){
+        if (food.isEatable()){
+            this.hp += food.getValue();
+        }
     }
 
     public int getFightPoints() {

@@ -32,7 +32,9 @@ public class Game {
         //-- create Enemies -- //
         ThingList warlockList = new ThingList();
         ThingList goblinList = new ThingList();
-        goblinList.add(new Treasure("pop-tart", "the pop tart is still warm and smells delicious but it's being guarded by a rather evil looking goblin.", false, false, true, false, 3));
+        goblinList.add(new Treasure("pop-tart", "the pop tart is still warm and smells delicious.", false, false, true, false, 3));
+        goblinList.add(new Treasure("chips", "5 chips", false, false, true, false, 3));
+
 
         Enemy grahamTheWarlock = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
         Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you.", false, true, false, false, goblinList, 2, 2);;
@@ -140,6 +142,7 @@ public class Game {
             retStr = "You don't have a " + obname + " in your backpack.";
         } else {
             player.increaseHP(t);
+            removeObFromList(t, player.getThings());
             retStr = obname + " eaten! HP increase by " + t.getValue() + " to " + player.getHp();
         }
         return retStr;
@@ -203,15 +206,15 @@ public class Game {
                         + enemy.getName() + " hits you and you lose " + enemy.getAttackPoints() + " health points. \n"
                         + "Your HP: " + player.getHp() + " " + enemy.getName() + " HP: " + enemy.getHp();
                 }
-                else if (isAnyoneDefeated(player, enemy).equals("player")){
+                else if (isAnyoneDefeated(player, enemy).equals("enemy")){
                     //enemy is removed from room
                     removeObFromList(enemyName, player.getLocation().getThings());
                     retStr = "You engage in a fierce battle with " + enemy.getName() + ".\n" +
-                            "You defeat them with one blow!";
-                    //add in method to get dead enemy's treasure
-                }
+                            "You defeat them with one blow!" + "\n"
+                     + takeDeadEnemiesTreasure(player, enemy);
+                            }
                 else{
-
+                    //player is defeated
                     retStr = "You engage in a fierce battle with " + enemy.getName() + ".\n" +
                             "You are defeated. You die.";
                     //add end game scenario here
@@ -225,14 +228,31 @@ public class Game {
         return retStr;
     }
 
+    public String takeDeadEnemiesTreasure(Actor player, Enemy enemy){
+        String retStr= "";
+        String s = "";
+        ThingList enemiesThings = enemy.getThings();
+
+        for(Thing t : enemy.getThings()) {
+            s = s + t.getName() + ":" + t.getDescription() + "\n";
+        }
+
+        retStr = enemy.getName() + " dropped : \n"
+         + s + "\n" + "You take dead enemies treasure!";
+
+        for (Thing t : enemiesThings){
+            player.getThings().add(t);
+        }
+     return retStr;
+
+    }
+
     private String isAnyoneDefeated(Actor player, Enemy enemy){
         if (player.getFightPoints() >= enemy.getHp()){
-            return "player";
+            return "enemy";
         }
         else if (enemy.getAttackPoints() >= player.getHp()){
-            int roomIndex = this.map.indexOf();
-            map.get(roomIndex).getThings()
-            return "enemy";
+            return "player";
         }
         else {
             return "no";

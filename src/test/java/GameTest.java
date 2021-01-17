@@ -27,13 +27,17 @@ public class GameTest {
     @Before
     public void setUp(){
         game = new Game();
+
         circleRoomList = new ThingList();
         room = new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList);
+
         treasure = new Treasure("Gold", "Shiny gold coin", true, false, false, false, 100 );
         playerList = new ThingList();
         player = new Actor("player", "a loveable game-player", playerList, room, 20, 3);
+
         warlockList = new ThingList();
-        enemy1 = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
+        warlockList.add(treasure);
+        enemy1 = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,1, 3 );
         enemy2 = new Enemy("troll", "a troll", false, true, false, false, warlockList, 10, 4);
 
     }
@@ -47,22 +51,15 @@ public class GameTest {
 
     @Test
     public void canAddTreasureToEnemy(){
-        warlockList.add(0, treasure);
-        enemy1.setThings(warlockList);
         assertEquals(warlockList, enemy1.getThings());
         assertEquals(1, enemy1.getThings().size());
     }
-//    @Test
-//    public void ifEnemyKilledDropsTreasure(){
-//        warlockList.add(0, treasure);
-//        enemy1.setThings(warlockList);
-//        game.addEnemyToList(enemy1);
-//        player.
-//        enemy1.reduceHp(10);
-//    }
 
-//    @Test
-//    public void playerCanEatFood(){
-//    }
+    @Test
+    public void canTakeDeadEnemiesTreasure(){
+        game.takeDeadEnemiesTreasure(player, enemy1);
+        assertEquals(1, player.getThings().size());
+    }
+
 
 }

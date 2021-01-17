@@ -47,6 +47,8 @@ public class Thing {
         return takeable;
     }
 
+    public void setTakeableToTrue(){this.takeable = true;}
+
     public boolean isFightable() {
         return fightable;
     }

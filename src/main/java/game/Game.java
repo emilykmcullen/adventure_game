@@ -32,6 +32,8 @@ public class Game {
         //-- create Enemies -- //
         ThingList warlockList = new ThingList();
         ThingList goblinList = new ThingList();
+        goblinList.add(new Treasure("pop-tart", "the pop tart is still warm and smells delicious but it's being guarded by a rather evil looking goblin.", false, false, true, false, 3));
+
         Enemy grahamTheWarlock = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
         Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you.", false, true, false, false, goblinList, 2, 2);;
 
@@ -44,7 +46,7 @@ public class Game {
 
         ThingList coolRoomList = new ThingList();
         coolRoomList.add(new Treasure("shades", "A pair of stunning designer shades", true, false, false, false, 5));
-        coolRoomList.add(new Treasure("ripped jeans", "Some stylishly ripped jeans with studs near the pockets", true, false, false, false, 4));
+        coolRoomList.add(new Treasure("jeans", "Some stylishly ripped jeans with studs near the pockets", true, false, false, false, 4));
 
         ThingList hutList = new ThingList();
         hutList.add(new Treasure("key", "a small key, how interesting", true, false, false , false,10));
@@ -56,11 +58,10 @@ public class Game {
         ThingList startRoomList = new ThingList();
         startRoomList.add(new Treasure("sword", "the sword is very rusty but it still looks sharp", true, false, false, false, 6));
         // Still to implement method kill the goblin set canTake to true
-        startRoomList.add(new Treasure("pop-tart", "the pop tart is still warm and smells delicious but it's being guarded by a rather evil looking goblin.", false, false, true, false, 3));
         startRoomList.add(banjoTheGoblin);
 
         ThingList forestList = new ThingList();
-        forestList.add(new Treasure("strange bubbling potion", "a potion bubbling in a glass in the bushes", true, false, false, true, 3));
+        forestList.add(new Treasure("potion", "a potion bubbling in a glass in the bushes", true, false, false, true, 3));
 
 
         ThingList playerlist = new ThingList();
@@ -169,7 +170,6 @@ public class Game {
             retStr = "That enemy isn't here!";
         }
         else {
-            retStr ="nice!";
             Enemy enemy = returnEnemyFromList(obname);
             if (enemy.isFightable()){
                 if (isAnyoneDefeated(player, enemy).equals("no")){
@@ -207,7 +207,8 @@ public class Game {
             return "player";
         }
         else if (enemy.getAttackPoints() >= player.getHp()){
-//            this.map.get(player.getLocation()).getThings().
+            int roomIndex = this.map.indexOf();
+            map.get(roomIndex).getThings()
             return "enemy";
         }
         else {

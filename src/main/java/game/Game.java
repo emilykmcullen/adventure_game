@@ -19,7 +19,7 @@ public class Game {
     private Actor player;  // the player - provides 'first person perspective'
 
     private List<String> commands = new ArrayList<>(Arrays.asList(
-            "take", "drop", "look", "l", "i", "inventory", "fight", "eat",
+            "take", "drop", "look", "l", "i", "inventory", "fight", "eat", "drink",
             "n", "s", "w", "e"
              ));
     private List<String> objects = new ArrayList<>(Arrays.asList("shades", "ripped jeans",
@@ -144,6 +144,29 @@ public class Game {
         return retStr;
     }
 
+    private String drinkOb(String obname){
+        String retStr = "";
+        Treasure t = (Treasure) player.getThings().thisOb(obname);
+
+        if (obname.equals("")){
+            obname = "nameless object";
+        } if (t == null) {
+            retStr = "You don't have a " + obname + " in your backpack.";
+        } else {
+            if (t.isDrinkable()) {
+                player.increaseHP(t);
+                removeObFromList(t, player.getThings());
+                retStr = obname + " eaten! HP increase by " + t.getValue() + " to " + player.getHp();
+            }
+            else {
+                retStr = "You can't drink" + obname;
+            }
+        }
+        return retStr;
+    }
+
+    
+
     private String dropOb(String obname) {
         String retStr = "";
         Thing t = player.getThings().thisOb(obname);
@@ -169,7 +192,6 @@ public class Game {
             retStr = "That enemy isn't here!";
         }
         else {
-            retStr ="nice!";
             Enemy enemy = returnEnemyFromList(obname);
             if (enemy.isFightable()){
                 if (isAnyoneDefeated(player, enemy).equals("no")){
@@ -374,7 +396,8 @@ public class Game {
                 case "eat":
                     msg = eatOb(noun);
                     break;
-
+                case "drink":
+                    msg = drinkOb(noun);
                 default:
                     msg += " (not yet implemented)";
                     break;

@@ -23,7 +23,7 @@ public class Game {
             "n", "s", "w", "e"
              ));
     private List<String> objects = new ArrayList<>(Arrays.asList("shades", "ripped jeans",
-            "key", "strange bubbling potion", "warlock"));
+            "key", "book", "sword", "pop-tart","strange bubbling potion", "warlock", "goblin"));
 
     public Game() {
         this.map = new ArrayList<Room>(); // TODO: Make map a Generic list of Rooms
@@ -31,10 +31,13 @@ public class Game {
 
         //-- create Enemies -- //
         ThingList warlockList = new ThingList();
+        ThingList goblinList = new ThingList();
         Enemy grahamTheWarlock = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
+        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin guarding the pop tart", false, true, false, false, goblinList, 2, 2);;
 
         //add enemies to list //
         addEnemyToList(grahamTheWarlock);
+        addEnemyToList(banjoTheGoblin);
 
         // --- construct a new adventure ---
 
@@ -47,6 +50,15 @@ public class Game {
         hutList.add(new Treasure("key", "a small key, how interesting", true, false, false , false,10));
         hutList.add(grahamTheWarlock);
 
+        ThingList circleRoomList = new ThingList();
+        circleRoomList.add(new Treasure("book", "the book is titled \"How To Be Cool\".This could be useful", true, false, false, false , 5));
+
+        ThingList startRoomList = new ThingList();
+        startRoomList.add(new Treasure("sword", "the sword is very rusty but it still looks sharp", true, false, false, false, 6));
+        // Still to implement method kill the goblin set canTake to true
+        startRoomList.add(new Treasure("pop-tart", "the pop tart is still warm and smells delicious but it's being guarded by a rather evil looking goblin.", false, false, true, false, 3));
+        startRoomList.add(banjoTheGoblin);
+
         ThingList forestList = new ThingList();
         forestList.add(new Treasure("strange bubbling potion", "a potion bubbling in a glass in the bushes", true, false, false, true, 3));
 
@@ -57,15 +69,15 @@ public class Game {
 
         map.add(new Room("Forest", "A deep dark forest, there is an owl tit twooing somewhere", 1, 2, Direction.NOEXIT, Direction.NOEXIT, forestList));
         map.add(new Room("Tiny hut", "A tiny hut", Direction.NOEXIT, 0, 4, Direction.NOEXIT, hutList));
-        //add 'circle room' here
-        //add 'start room' here
+        map.add(new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList));
+        map.add(new Room("Street outside of the hero party", "There's only the bouncer near around. Everyone else is inside.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList));
         map.add(new Room("Coolest Place Ever", "A glorious assortment of really, really cool things litter the room", Direction.NOEXIT, Direction.NOEXIT, Direction.NOEXIT, 1, coolRoomList));
 
 
         // create player and place in Room 0 (i.e. the Room at 0 index of map)
 
         //WE WOULD NEED TO CHANGE THE INDEX HERE
-        player = new Actor("player", "a loveable game-player", playerlist, map.get(1), 20, 3);
+        player = new Actor("player", "a loveable game-player", playerlist, map.get(3), 20, 3);
     }
 
     // access methods
@@ -369,8 +381,8 @@ public class Game {
 
     public void showIntro() {
         String s;
-        s = "You have fallen down a rabbit hole and arrived in\n"
-                + "an underground cavern that smells strongly of troll.\n"
+        s = "You have just arrived at the entrance to the hero party but the bouncer won't let you in!\n"
+                + "You've gotta get yourself looking the part!.\n"
                 + "Where do you want to go? [Enter n, s, w or e]?\n"
                 + "(or enter q to quit)";
         showStr(s);

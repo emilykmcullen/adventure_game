@@ -46,9 +46,9 @@ public class Actor extends ThingHolder {
         this.hp -= damage;
     }
 
-    public void increaseHP(Treasure food){
-        if (food.isEatable()){
-            this.hp += food.getValue();
+    public void increaseHP(Treasure consumable){
+        if (consumable.isEatable()){
+            this.hp += consumable.getValue();
         }
     }
 

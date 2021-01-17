@@ -33,7 +33,7 @@ public class Game {
         ThingList warlockList = new ThingList();
         ThingList goblinList = new ThingList();
         Enemy grahamTheWarlock = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
-        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin guarding the pop tart", false, true, false, false, goblinList, 2, 2);;
+        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you.", false, true, false, false, goblinList, 2, 2);;
 
         //add enemies to list //
         addEnemyToList(grahamTheWarlock);
@@ -70,7 +70,7 @@ public class Game {
         map.add(new Room("Forest", "A deep dark forest, there is an owl tit twooing somewhere", 1, 2, Direction.NOEXIT, Direction.NOEXIT, forestList));
         map.add(new Room("Tiny hut", "A tiny hut", Direction.NOEXIT, 0, 4, Direction.NOEXIT, hutList));
         map.add(new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList));
-        map.add(new Room("Street outside of the hero party", "There's only the bouncer near around. Everyone else is inside.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList));
+        map.add(new Room("Street outside of the hero party", "It is really cold but the bouncer isn't moving.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList));
         map.add(new Room("Coolest Place Ever", "A glorious assortment of really, really cool things litter the room", Direction.NOEXIT, Direction.NOEXIT, Direction.NOEXIT, 1, coolRoomList));
 
 
@@ -124,18 +124,21 @@ public class Game {
         return retStr;
     }
 
-    // Eat object
-//    private String eatOb(String obname) {
-//        String retStr = "";
-//        Thing t = player.getThings().thisOb(obname);
-//        if (obname.equals("")){
-//            obname = "nameless object";
-//        } if (t == null) {
-//            retStr = "You'll have to tell me which object you want to 'eat'!";
-//        } if (t.isEatable(obname)){
-//            player.increaseHP.
-//        }
-//    }
+    // Eat object had to cast thing to treasure to access value
+    private String eatOb(String obname) {
+        String retStr = "";
+        Treasure t = (Treasure) player.getThings().thisOb(obname);
+
+        if (obname.equals("")){
+            obname = "nameless object";
+        } if (t == null) {
+            retStr = "You don't have a " + obname + " in your backpack.";
+        } else {
+            player.increaseHP(t);
+            retStr = obname + " eaten! HP increase by " + t.getValue() + " to " + player.getHp();
+        }
+        return retStr;
+    }
 
     private String dropOb(String obname) {
         String retStr = "";
@@ -363,9 +366,9 @@ public class Game {
                 case "fight":
                     msg = fightEnemy(noun);
                     break;
-//                case "eat":
-//                    msg = eatOb(noun);
-//                    break;
+                case "eat":
+                    msg = eatOb(noun);
+                    break;
 
                 default:
                     msg += " (not yet implemented)";

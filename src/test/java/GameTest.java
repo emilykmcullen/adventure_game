@@ -61,9 +61,8 @@ public class GameTest {
 //        enemy1.reduceHp(10);
 //    }
 
-    @Test
-    public void playerCanEatFood(){
-
-    }
+//    @Test
+//    public void playerCanEatFood(){
+//    }
 
 }

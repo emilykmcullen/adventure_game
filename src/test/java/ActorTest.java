@@ -13,6 +13,7 @@ public class ActorTest {
 
     Game game;
     Treasure food;
+    Treasure rock;
     ThingList circleRoomList;
     Room room;
     ThingList playerList;
@@ -23,6 +24,8 @@ public class ActorTest {
     public void setUp(){
         game = new Game();
         food = new Treasure("Apple", "Crunchy Apple", true, false, true, false, 5);
+        rock = new Treasure("Rock", "A hard rock", true, false, false, false, 5);
+
         circleRoomList = new ThingList();
         room = new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList);
         playerList = new ThingList();
@@ -33,6 +36,13 @@ public class ActorTest {
     public void canIncreaseHpByValueOfItemIfEdible(){
         player.increaseHP(food);
         assertEquals(25, player.getHp());
+    }
+
+    @Test
+    public void cantIncreaseHpIfInedible(){
+        player.increaseHP(rock);
+        assertEquals(20, player.getHp());
+
     }
 
 

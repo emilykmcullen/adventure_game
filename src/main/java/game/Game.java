@@ -117,9 +117,13 @@ public class Game {
         }
         if (t == null) {
             retStr = "There is no " + obname + " here!";
-        } else {
+        }
+        if (t.isTakeable()) {
             transferOb(t, player.getLocation().getThings(), player.getThings());
             retStr = obname + " taken!";
+
+        } else {
+            retStr = "You cannot take " + obname + "!";
         }
         return retStr;
     }
@@ -203,6 +207,7 @@ public class Game {
             return "player";
         }
         else if (enemy.getAttackPoints() >= player.getHp()){
+//            this.map.get(player.getLocation()).getThings().
             return "enemy";
         }
         else {

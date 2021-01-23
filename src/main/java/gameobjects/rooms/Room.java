@@ -6,6 +6,7 @@ import gameobjects.ThingList;
 public class Room extends ThingHolder {
     private int n, s, w, e;
     private boolean enemyPresent;
+    private boolean specialBlockedExit;
 
     public Room(String name, String description, int n, int s, int w, int e, ThingList tl, boolean enemyPresent){
         super(name, description, tl);
@@ -14,6 +15,8 @@ public class Room extends ThingHolder {
         this.w = w;
         this.e = e;
         this.enemyPresent = enemyPresent;
+        this.specialBlockedExit = false;
+
     }
 
     public int getN() {
@@ -59,5 +62,13 @@ public class Room extends ThingHolder {
 
     public void setEnemyPresent(boolean enemyPresent) {
         this.enemyPresent = enemyPresent;
+    }
+
+    public boolean hasSpecialBlockedExit() {
+        return specialBlockedExit;
+    }
+
+    public void setSpecialBlockedExit(boolean specialBlockedExit) {
+        this.specialBlockedExit = specialBlockedExit;
     }
 }

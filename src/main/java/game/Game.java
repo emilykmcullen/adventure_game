@@ -67,19 +67,25 @@ public class Game {
 
 
         ThingList playerlist = new ThingList();
-        // Add Rooms to the map
-        //                 Room( name,   description,                             N,        S,      W,      E )
 
+        //Create rooms with special blocked exits
+        Room starterRoom = new Room("Street outside of the hero party", "It is really cold but the bouncer isn't moving.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList, true);
+        starterRoom.setSpecialBlockedExit(true);
+
+        Room hutRoom = new Room("Tiny hut", "A tiny hut", Direction.NOEXIT, 0, 4, Direction.NOEXIT, hutList, true);
+        hutRoom.setSpecialBlockedExit(true);
+
+       // Add Rooms to the map
+//                 Room( name,   description,                             N,        S,      W,      E )
         map.add(new Room("Forest", "A deep dark forest, there is an owl tit twooing somewhere", 1, 2, Direction.NOEXIT, Direction.NOEXIT, forestList, false));
-        map.add(new Room("Tiny hut", "A tiny hut", Direction.NOEXIT, 0, 4, Direction.NOEXIT, hutList, true));
+        map.add(hutRoom);
         map.add(new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList, false));
-        map.add(new Room("Street outside of the hero party", "It is really cold but the bouncer isn't moving.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList, true));
+        map.add(starterRoom);
         map.add(new Room("Coolest Place Ever", "A glorious assortment of really, really cool things litter the room", Direction.NOEXIT, Direction.NOEXIT, Direction.NOEXIT, 1, coolRoomList, false));
 
 
         // create player and place in Room 0 (i.e. the Room at 0 index of map)
 
-        //WE WOULD NEED TO CHANGE THE INDEX HERE
         player = new Actor("player", "a loveable game-player", playerlist, map.get(3), 20, 3);
     }
 
@@ -124,8 +130,11 @@ public class Game {
         if (t.isTakeable()) {
             transferOb(t, player.getLocation().getThings(), player.getThings());
             retStr = obname + " taken!";
-
-        } else {
+            if (t.getName() == "key"){
+                map.get(1).setSpecialBlockedExit(false);
+            }
+        }
+        else {
             retStr = "You cannot take " + obname + "!";
         }
         return retStr;
@@ -144,6 +153,7 @@ public class Game {
             player.increaseHP(t);
             removeObFromList(t, player.getThings());
             retStr = obname + " eaten! HP increase by " + t.getValue() + " to " + player.getHp();
+
         }
         return retStr;
     }
@@ -181,6 +191,9 @@ public class Game {
         } else {
             transferOb(t, player.getThings(), player.getLocation().getThings());
             retStr = obname + " dropped!";
+            if (t.getName() == "key"){
+                map.get(1).setSpecialBlockedExit(true);
+            }
         }
         return retStr;
     }
@@ -338,17 +351,40 @@ public class Game {
     }
 
     private void goW() {
-        if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+        if(player.getLocation() == map.get(1)){lockedCoolRoom();}
+
+        else if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+
         else {movePlayerTo(Direction.WEST);}
     }
 
     private void goE() {
-        if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+        if (player.getLocation()== map.get(3)){talkToBouncer();}
+
+        else if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+
         else {movePlayerTo(Direction.EAST);}
     }
 
     private void cannotLeaveRoom(){
         showStr("You must first defeat the enemy in the room!");
+    }
+
+    private void talkToBouncer(){
+        if (map.get(3).hasSpecialBlockedExit() == true){
+            showStr("The bouncer says: 'Sorry pal, you're not cool enough for this crazy shindig, hit the road. STAT.'");
+        }
+        //NEED TO ADD END GAME FUNCTION HERE IN ELSE STATEMENT!!!!!!!
+    }
+
+    private void lockedCoolRoom(){
+        if(map.get(1).hasSpecialBlockedExit() == true){
+            showStr("There's a big wooden door, you push it .... it's locked!!");
+        }
+        else {
+            showStr("You try the key in the door, it opens!");
+            movePlayerTo(Direction.WEST);
+        }
     }
 
     private void look() {

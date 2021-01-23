@@ -37,7 +37,7 @@ public class Game {
 
 
         Enemy grahamTheWarlock = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
-        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you.", false, true, false, false, goblinList, 2, 2);;
+        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you. It looks like there's a pop-tart in it's hand.", false, true, false, false, goblinList, 2, 2);;
 
         //add enemies to list //
         addEnemyToList(grahamTheWarlock);

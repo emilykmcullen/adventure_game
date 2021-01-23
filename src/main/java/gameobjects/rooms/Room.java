@@ -5,13 +5,15 @@ import gameobjects.ThingList;
 
 public class Room extends ThingHolder {
     private int n, s, w, e;
+    private boolean enemyPresent;
 
-    public Room(String name, String description, int n, int s, int w, int e, ThingList tl){
+    public Room(String name, String description, int n, int s, int w, int e, ThingList tl, boolean enemyPresent){
         super(name, description, tl);
         this.n = n;
         this.s = s;
         this.w = w;
         this.e = e;
+        this.enemyPresent = enemyPresent;
     }
 
     public int getN() {
@@ -49,5 +51,13 @@ public class Room extends ThingHolder {
     public String describe(){
         return String.format("%s. %s.", getName(), getDescription())
                 + "\nThings here:\n" + getThings().describeThings();
+    }
+
+    public boolean isEnemyPresent() {
+        return enemyPresent;
+    }
+
+    public void setEnemyPresent(boolean enemyPresent) {
+        this.enemyPresent = enemyPresent;
     }
 }

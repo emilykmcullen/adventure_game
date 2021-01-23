@@ -27,7 +27,7 @@ public class ActorTest {
         rock = new Treasure("Rock", "A hard rock", true, false, false, false, 5);
 
         circleRoomList = new ThingList();
-        room = new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList);
+        room = new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList, false);
         playerList = new ThingList();
         player = new Actor("player", "a loveable game-player", playerList, room, 20, 3);
     }

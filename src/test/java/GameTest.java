@@ -29,7 +29,7 @@ public class GameTest {
         game = new Game();
 
         circleRoomList = new ThingList();
-        room = new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList);
+        room = new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList, false);
 
         treasure = new Treasure("Gold", "Shiny gold coin", true, false, false, false, 100 );
         playerList = new ThingList();

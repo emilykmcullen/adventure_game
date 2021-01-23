@@ -19,7 +19,7 @@ public class Game {
     private Actor player;  // the player - provides 'first person perspective'
 
     private List<String> commands = new ArrayList<>(Arrays.asList(
-            "take", "drop", "look", "l", "i", "inventory", "fight", "eat", "drink",
+            "take", "drop", "look", "l", "i", "inventory", "fight", "eat", "drink", "potion",
             "n", "s", "w", "e"
              ));
     private List<String> objects = new ArrayList<>(Arrays.asList("shades", "ripped jeans",
@@ -70,11 +70,11 @@ public class Game {
         // Add Rooms to the map
         //                 Room( name,   description,                             N,        S,      W,      E )
 
-        map.add(new Room("Forest", "A deep dark forest, there is an owl tit twooing somewhere", 1, 2, Direction.NOEXIT, Direction.NOEXIT, forestList));
-        map.add(new Room("Tiny hut", "A tiny hut", Direction.NOEXIT, 0, 4, Direction.NOEXIT, hutList));
-        map.add(new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList));
-        map.add(new Room("Street outside of the hero party", "It is really cold but the bouncer isn't moving.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList));
-        map.add(new Room("Coolest Place Ever", "A glorious assortment of really, really cool things litter the room", Direction.NOEXIT, Direction.NOEXIT, Direction.NOEXIT, 1, coolRoomList));
+        map.add(new Room("Forest", "A deep dark forest, there is an owl tit twooing somewhere", 1, 2, Direction.NOEXIT, Direction.NOEXIT, forestList, false));
+        map.add(new Room("Tiny hut", "A tiny hut", Direction.NOEXIT, 0, 4, Direction.NOEXIT, hutList, true));
+        map.add(new Room("Circle room", "A strange room with no corners.", 0, Direction.NOEXIT, Direction.NOEXIT,3, circleRoomList, false));
+        map.add(new Room("Street outside of the hero party", "It is really cold but the bouncer isn't moving.", Direction.NOEXIT, Direction.NOEXIT, 2, Direction.NOEXIT, startRoomList, true));
+        map.add(new Room("Coolest Place Ever", "A glorious assortment of really, really cool things litter the room", Direction.NOEXIT, Direction.NOEXIT, Direction.NOEXIT, 1, coolRoomList, false));
 
 
         // create player and place in Room 0 (i.e. the Room at 0 index of map)
@@ -209,6 +209,7 @@ public class Game {
                 else if (isAnyoneDefeated(player, enemy).equals("enemy")){
                     //enemy is removed from room
                     removeObFromList(enemyName, player.getLocation().getThings());
+                    player.getLocation().setEnemyPresent(false);
                     retStr = "You engage in a fierce battle with " + enemy.getName() + ".\n" +
                             "You defeat them with one blow!" + "\n"
                      + takeDeadEnemiesTreasure(player, enemy);
@@ -232,19 +233,20 @@ public class Game {
         String retStr= "";
         String s = "";
         ThingList enemiesThings = enemy.getThings();
+        if (enemiesThings.size() > 0)
+            {
+                for(Thing t : enemy.getThings()) {
+                    s = s + t.getName() + ":" + t.getDescription() + "\n";
+                }
 
-        for(Thing t : enemy.getThings()) {
-            s = s + t.getName() + ":" + t.getDescription() + "\n";
-        }
+                retStr = enemy.getName() + " dropped : \n"
+                        + s + "\n" + "You take dead enemies treasure!";
 
-        retStr = enemy.getName() + " dropped : \n"
-         + s + "\n" + "You take dead enemies treasure!";
-
-        for (Thing t : enemiesThings){
-            player.getThings().add(t);
-        }
-     return retStr;
-
+                for (Thing t : enemiesThings){
+                    player.getThings().add(t);
+                }
+            }
+        return retStr;
     }
 
     private String isAnyoneDefeated(Actor player, Enemy enemy){
@@ -326,19 +328,27 @@ public class Game {
     }
 
     private void goN() {
-        movePlayerTo(Direction.NORTH);
+        if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+        else {movePlayerTo(Direction.NORTH);}
     }
 
     private void goS() {
-        movePlayerTo(Direction.SOUTH);
+        if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+        else {movePlayerTo(Direction.SOUTH);}
     }
 
     private void goW() {
-        movePlayerTo(Direction.WEST);
+        if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+        else {movePlayerTo(Direction.WEST);}
     }
 
     private void goE() {
-        movePlayerTo(Direction.EAST);
+        if (player.getLocation().isEnemyPresent() == true){cannotLeaveRoom();}
+        else {movePlayerTo(Direction.EAST);}
+    }
+
+    private void cannotLeaveRoom(){
+        showStr("You must first defeat the enemy in the room!");
     }
 
     private void look() {

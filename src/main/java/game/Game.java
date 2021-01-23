@@ -23,7 +23,7 @@ public class Game {
             "n", "s", "w", "e"
              ));
     private List<String> objects = new ArrayList<>(Arrays.asList("shades", "ripped jeans",
-            "key", "book", "sword", "pop-tart","strange bubbling potion", "warlock", "goblin"));
+            "key", "book", "sword", "pop-tart","strange bubbling potion", "warlock", "goblin", "chips"));
 
     public Game() {
         this.map = new ArrayList<Room>(); // TODO: Make map a Generic list of Rooms

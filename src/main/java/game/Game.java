@@ -40,7 +40,7 @@ public class Game {
 
 
         Enemy grahamTheWarlock = new Enemy("warlock", "a fearsome warlock", false, true, false, false, warlockList,10, 3 );
-        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you. It looks like there's a pop-tart in it's hand.", false, true, false, false, goblinList, 2, 2);;
+        Enemy banjoTheGoblin = new Enemy("goblin", "a mean looking goblin stares at you. It looks like there's a pop-tart in it's hand.", false, true, false, false, goblinList, 3, 4);
 
         //add enemies to list //
         addEnemyToList(grahamTheWarlock);
@@ -286,9 +286,7 @@ public class Game {
                             }
                 else{
                     //player is defeated
-                    retStr = "You engage in a fierce battle with " + enemy.getName() + ".\n" +
-                            "You are defeated. You die.";
-                    //add end game scenario here
+                    playerDiesInBattleEndGame(enemy);
                 }
 
             }
@@ -439,6 +437,12 @@ public class Game {
         showStr("The bouncer says: 'Hey, looking swish my friend, in you go...' \n"
                     + "The bouncer opens the door and you enter to a really fantastic party, well done. \n"
                     + "GAME OVER");
+        this.setEndGame(true);
+    }
+
+    private void playerDiesInBattleEndGame(Enemy enemy){
+        showStr("You engage in a fierce battle with " + enemy.getName() + ".\n" +
+                "You are defeated. You die.");
         this.setEndGame(true);
     }
 

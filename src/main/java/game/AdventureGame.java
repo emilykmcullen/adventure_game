@@ -18,7 +18,7 @@ public class AdventureGame {
             input = in.readLine();
             output = game.runCommand(input);
             System.out.println(output);
-        } while (!"q".equals(input));
+        } while (game.isEndGame() == false && !"q".equals(input));
     }
 
 }

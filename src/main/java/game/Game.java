@@ -25,7 +25,10 @@ public class Game {
     private List<String> objects = new ArrayList<>(Arrays.asList("shades", "jeans", "potion",
             "key", "book", "sword", "pop-tart", "warlock", "goblin", "chips"));
 
+    private boolean endGame;
+
     public Game() {
+        this.endGame = false;
         this.map = new ArrayList<Room>(); // TODO: Make map a Generic list of Rooms
         this.enemies = new ArrayList<Enemy>();
 
@@ -94,6 +97,8 @@ public class Game {
         player = new Actor("player", "a loveable game-player", playerlist, map.get(3), 20, 3);
     }
 
+
+
     // access methods
     // map
     private ArrayList getMap() {
@@ -111,6 +116,14 @@ public class Game {
 
     public void setPlayer(Actor aPlayer) {
         player = aPlayer;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame(boolean endGame) {
+        this.endGame = endGame;
     }
 
     // take and drop
@@ -137,6 +150,9 @@ public class Game {
             retStr = obname + " taken!";
             if (t.getName() == "key"){
                 map.get(1).setSpecialBlockedExit(false);
+            }
+            if(t.getName() == "book"){
+                player.setHasCoolBook(true);
             }
         }
         else {
@@ -231,7 +247,7 @@ public class Game {
                 }
             }
             if (t.isWearable() && player.hasCoolBookInPossessions() == false){
-                retStr = "You look at the " + obname + "but you don't know what to do with them! \n"
+                retStr = "You look at the " + obname + " but you don't know what to do with them! \n"
                         + "If only you had some sort of guide to show you the way....";
             }
         }
@@ -292,10 +308,8 @@ public class Game {
                 for(Thing t : enemy.getThings()) {
                     s = s + t.getName() + ":" + t.getDescription() + "\n";
                 }
-
                 retStr = enemy.getName() + " dropped : \n"
                         + s + "\n" + "You take dead enemies treasure!";
-
                 for (Thing t : enemiesThings){
                     player.getThings().add(t);
                 }
@@ -412,10 +426,20 @@ public class Game {
     }
 
     private void talkToBouncer(){
-        if (map.get(3).hasSpecialBlockedExit() == true){
+        if(player.isWearingJeans() == true && player.isWearingShades() == true){
+            partyEndScene();
+        }
+        else {
             showStr("The bouncer says: 'Sorry pal, you're not cool enough for this crazy shindig, hit the road. STAT.'");
         }
         //NEED TO ADD END GAME FUNCTION HERE IN ELSE STATEMENT!!!!!!!
+    }
+
+    private void partyEndScene(){
+        showStr("The bouncer says: 'Hey, looking swish my friend, in you go...' \n"
+                    + "The bouncer opens the door and you enter to a really fantastic party, well done. \n"
+                    + "GAME OVER");
+        this.setEndGame(true);
     }
 
     private void lockedCoolRoom(){

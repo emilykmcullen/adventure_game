@@ -7,6 +7,7 @@ public class Thing {
     private boolean fightable;
     private boolean eatable;
     private boolean drinkable;
+    private boolean wearable;
 
     public Thing(String name, String description, boolean canTake, boolean canFight, boolean canEat, boolean canDrink){
         this.name = name;
@@ -15,6 +16,7 @@ public class Thing {
         this.fightable = canFight;
         this.eatable = canEat;
         this.drinkable = canDrink;
+        this.wearable = false;
     }
 
     //below constructor can be used for Room objects for example
@@ -25,6 +27,7 @@ public class Thing {
         this.fightable = false;
         this.eatable = false;
         this.drinkable = false;
+        this.wearable = false;
     }
 
     public String getName() {
@@ -61,4 +64,11 @@ public class Thing {
         return drinkable;
     }
 
+    public boolean isWearable() {
+        return wearable;
+    }
+
+    public void setWearable(boolean wearable) {
+        this.wearable = wearable;
+    }
 }

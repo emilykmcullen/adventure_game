@@ -19,11 +19,11 @@ public class Game {
     private Actor player;  // the player - provides 'first person perspective'
 
     private List<String> commands = new ArrayList<>(Arrays.asList(
-            "take", "drop", "look", "l", "i", "inventory", "fight", "eat", "drink", "potion",
+            "take", "drop", "look", "l", "i", "inventory", "fight", "eat", "drink", "wear",
             "n", "s", "w", "e"
              ));
-    private List<String> objects = new ArrayList<>(Arrays.asList("shades", "ripped jeans",
-            "key", "book", "sword", "pop-tart","strange bubbling potion", "warlock", "goblin", "chips"));
+    private List<String> objects = new ArrayList<>(Arrays.asList("shades", "jeans", "potion",
+            "key", "book", "sword", "pop-tart", "warlock", "goblin", "chips"));
 
     public Game() {
         this.map = new ArrayList<Room>(); // TODO: Make map a Generic list of Rooms
@@ -47,15 +47,20 @@ public class Game {
 
 
         ThingList coolRoomList = new ThingList();
-        coolRoomList.add(new Treasure("shades", "A pair of stunning designer shades", true, false, false, false, 5));
-        coolRoomList.add(new Treasure("jeans", "Some stylishly ripped jeans with studs near the pockets", true, false, false, false, 4));
+        Treasure shades = new Treasure("shades", "A pair of stunning designer shades", true, false, false, false, 5);
+        Treasure jeans = new Treasure("jeans", "Some stylishly ripped jeans with studs near the pockets", true, false, false, false, 4);
+        shades.setWearable(true);
+        jeans.setWearable(true);
+        coolRoomList.add(shades);
+        coolRoomList.add(jeans);
 
         ThingList hutList = new ThingList();
         hutList.add(new Treasure("key", "a small key, how interesting", true, false, false , false,10));
         hutList.add(grahamTheWarlock);
 
         ThingList circleRoomList = new ThingList();
-        circleRoomList.add(new Treasure("book", "the book is titled \"How To Be Cool\".This could be useful", true, false, false, false , 5));
+        Treasure bookOfCool = new Treasure("book", "the book is titled \"How To Be Cool\".This could be useful", true, false, false, false , 5);
+        circleRoomList.add(bookOfCool);
 
         ThingList startRoomList = new ThingList();
         startRoomList.add(new Treasure("sword", "the sword is very rusty but it still looks sharp", true, false, false, false, 6));
@@ -150,10 +155,14 @@ public class Game {
         } if (t == null) {
             retStr = "You don't have a " + obname + " in your backpack.";
         } else {
-            player.increaseHP(t);
-            removeObFromList(t, player.getThings());
-            retStr = obname + " eaten! HP increase by " + t.getValue() + " to " + player.getHp();
-
+            if (t.isEatable()) {
+                player.increaseHP(t);
+                removeObFromList(t, player.getThings());
+                retStr = obname + " eaten! HP increase by " + t.getValue() + " to " + player.getHp();
+            }
+            else {
+                retStr = "You can't eat" + obname;
+            }
         }
         return retStr;
     }
@@ -196,6 +205,38 @@ public class Game {
             }
         }
         return retStr;
+    }
+
+    private String wearOb(String obname) {
+        String retStr = "";
+        Thing t = player.getThings().thisOb(obname);
+        if (obname.equals("")){
+            obname = "nameless object";
+        }
+        if (t == null) {
+            retStr = "You don't have a " + obname + " in your backpack.";
+        }
+        else {
+            if (t.isWearable() == false){
+                retStr = "You can't wear " + obname;
+            }
+            if (t.isWearable() && player.hasCoolBookInPossessions() == true) {
+                retStr = "You put on the " + obname + ".\n" +
+                        "Looking good!";
+                if (t.getName() == "jeans"){
+                    player.setWearingJeans(true);
+                }
+                if (t.getName() == "shades"){
+                    player.setWearingShades(true);
+                }
+            }
+            if (t.isWearable() && player.hasCoolBookInPossessions() == false){
+                retStr = "You look at the " + obname + "but you don't know what to do with them! \n"
+                        + "If only you had some sort of guide to show you the way....";
+            }
+        }
+        return retStr;
+
     }
 
 
@@ -466,6 +507,10 @@ public class Game {
                     break;
                 case "drink":
                     msg = drinkOb(noun);
+                    break;
+                case "wear":
+                    msg = wearOb(noun);
+                    break;
                 default:
                     msg += " (not yet implemented)";
                     break;
